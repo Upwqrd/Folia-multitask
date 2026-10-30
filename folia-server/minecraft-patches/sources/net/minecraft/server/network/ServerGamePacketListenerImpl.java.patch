@@ -1,0 +1,14 @@
+--- a/net/minecraft/server/network/ServerGamePacketListenerImpl.java
++++ b/net/minecraft/server/network/ServerGamePacketListenerImpl.java
+@@ -1800,3 +_,10 @@
+-                                this.player.stopUsingItem(); // CraftBukkit - SPIGOT-4706
++                                boolean keepEating = this.player.isUsingItem()
++                                    && hand != this.player.getUsedItemHand()
++                                    && this.player.getUseItem().has(net.minecraft.core.component.DataComponents.FOOD)
++                                    && (itemInHand.is(net.minecraft.world.item.Items.END_CRYSTAL)
++                                        || itemInHand.getItem() instanceof net.minecraft.world.item.BlockItem);
++                                if (!keepEating) {
++                                    this.player.stopUsingItem(); // CraftBukkit - SPIGOT-4706
++                                }
+                                 InteractionResult interactionResult = this.player.gameMode.useItemOn(this.player, serverLevel, itemInHand, hand, hitResult);
+                                 if (interactionResult.consumesAction()) {
